@@ -1,4 +1,22 @@
 {
+	"name" : "wildwolf/yubico-otp",
+	"description" : "PHP 7-friendly alternative to the official php-yubico client",
+	"type" : "library",
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "Volodymyr Kolesnykov",
+			"email" : "volodymyr@wildwolf.name",
+			"homepage" : "https://wildwolf.name/",
+			"role" : "Developer"
+		}
+	],
+	"keywords" : [
+		"Yubico",
+		"OTP",
+		"security",
+		"authentication",
+		"2FA"
+	],
 	"require" : {
 		"wildwolf/curl-wrapper" : "^2.0",
 		"php" : ">=7.0.0",
@@ -21,22 +39,4 @@
 	"scripts" : {
 		"test" : "phpunit"
 	},
-	"name" : "wildwolf/ww-yubico-otp",
-	"description" : "PHP 7-friendly alternative to the official php-yubico client",
-	"type" : "library",
-	"license" : "MIT",
-	"authors" : [{
-			"name" : "Volodymyr Kolesnykov",
-			"email" : "volodymyr@wildwolf.name",
-			"homepage" : "https://wildwolf.name/",
-			"role" : "Developer"
-		}
-	],
-	"keywords" : [
-		"Yubico",
-		"OTP",
-		"security",
-		"authentication",
-		"2FA"
-	]
 }
