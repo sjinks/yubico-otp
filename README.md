@@ -5,4 +5,4 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sjinks/ww-yubico-otp/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sjinks/ww-yubico-otp/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/sjinks/ww-yubico-otp/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/sjinks/ww-yubico-otp/?branch=master)
 
-PHP 7 friendly alternative to the official [php-yubico](https://github.com/Yubico/php-yubico) client.
+PHP 7-friendly alternative to the official [php-yubico](https://github.com/Yubico/php-yubico) client.
