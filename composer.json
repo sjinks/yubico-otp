@@ -38,13 +38,14 @@
 			"tests/"
 		]
 	},
-	"scripts": {
-		"test": "phpunit"
-	},
 	"config": {
 		"sort-packages": true,
 		"allow-plugins": {
 			"composer/package-versions-deprecated": true
 		}
+	},
+	"scripts": {
+		"psalm": "psalm --long-progress --no-cache",
+		"test": "phpunit"
 	}
 }
