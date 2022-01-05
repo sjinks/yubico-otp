@@ -1,6 +1,9 @@
 <?php
+
 namespace WildWolf\Yubico;
 
-class OTPException extends \Exception
+use Exception;
+
+class OTPException extends Exception
 {
 }

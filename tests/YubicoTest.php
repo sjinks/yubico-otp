@@ -1,33 +1,38 @@
 <?php
 
-class YubicoTest extends \PHPUnit\Framework\TestCase
-{
-	private $yubi;
+use PHPUnit\Framework\TestCase;
+use WildWolf\Yubico\OTP;
+use WildWolf\Yubico\OTPReplayException;
 
-	protected function setUp()
+class YubicoTest extends TestCase
+{
+	private OTP $yubi;
+
+	protected function setUp(): void
 	{
-		$this->yubi = new \WildWolf\Yubico\OTP(27655, '9Tt8Gg51VG/dthDKgopt0n8IXVI=');
+		$this->yubi = new OTP(27655, '9Tt8Gg51VG/dthDKgopt0n8IXVI=');
+		$this->yubi->setTransport(new TestTransport());
 	}
 
-	public function testVerify()
+	public function testVerify(): void
 	{
 		$otp = 'vvincrediblegfnchniugtdcbrleehenethrlbihdijv';
-		$this->expectException(WildWolf\Yubico\OTPReplayException::class);
+		$this->expectException(OTPReplayException::class);
 		$this->yubi->verify($otp);
 	}
 
-	public function testVerifyNoSig()
+	public function testVerifyNoSig(): void
 	{
 		$otp = 'vvincrediblegfnchniugtdcbrleehenethrlbihdijv';
-		$this->expectException(WildWolf\Yubico\OTPReplayException::class);
-		$yubi = new \WildWolf\Yubico\OTP(27655);
+		$this->expectException(OTPReplayException::class);
+		$yubi = new OTP(27655);
+		$yubi->setTransport(new TestTransport());
 		$yubi->verify($otp);
 	}
 
-	public function testBadOTP()
+	public function testBadOTP(): void
 	{
 		$otp = 'vvincrediblegfnchniugtdcbrleehenethrlbihdijc';
-		$this->expectException(WildWolf\Yubico\OTPNoValidAnswerException::class);
-		$this->yubi->verify($otp);
+		self::assertFalse($this->yubi->verify($otp));
 	}
 }

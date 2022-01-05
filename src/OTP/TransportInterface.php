@@ -1,7 +1,11 @@
 <?php
+
 namespace WildWolf\Yubico\OTP;
 
 interface TransportInterface
 {
-	public function request(string $key, array $endpoints, array $params) : bool;
+	/**
+	 * @psalm-param array<string,string> $params
+	 */
+	public function request(string $key, string $endpoint, array $params): string;
 }

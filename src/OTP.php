@@ -1,99 +1,91 @@
 <?php
+
 namespace WildWolf\Yubico;
+
+use InvalidArgumentException;
+use WildWolf\Yubico\OTP\TransportInterface;
 
 class OTP
 {
-	/**
-	 * @var string
-	 */
-	private $id;
+	private string $id;
+	private string $key;
+	private string $endpoint = 'https://api.yubico.com/wsapi/2.0/verify';
+	private bool $usets = false;
+	private string $synclevel = '';
+	private ?TransportInterface $transport = null;
 
 	/**
-	 * @var string
+	 * @param string|int $id
+	 * @psalm-param int|numeric-string $id
 	 */
-	private $key;
-
-	/**
-	 * @var array
-	 */
-	private $endpoints = [
-		'https://api.yubico.com/wsapi/2.0/verify',
-		'https://api2.yubico.com/wsapi/2.0/verify',
-		'https://api3.yubico.com/wsapi/2.0/verify',
-		'https://api4.yubico.com/wsapi/2.0/verify',
-		'https://api5.yubico.com/wsapi/2.0/verify',
-	];
-
-	/**
-	 * @var bool
-	 */
-	private $usets = false;
-
-	private $synclevel = '';
-
-	private $transport = null;
-
-	public function __construct(string $id, string $key = '')
+	public function __construct($id, string $key = '')
 	{
-		$this->id  = $id;
-		$this->key = \base64_decode($key);
+		$this->id  = (string) $id;
+		$this->key = base64_decode($key);
 	}
 
-	public function getEndpoints() : array
+	public function getEndpoint(): string
 	{
-		return $this->endpoints;
+		return $this->endpoint;
 	}
 
-	public function setEndpoints(array $endpoints)
+	public function setEndpoint(string $endpoint): void
 	{
-		$this->endpoints = $endpoints;
+		$this->endpoint = $endpoint;
 	}
 
-	public function getUseTimestamp() : bool
+	public function getUseTimestamp(): bool
 	{
 		return $this->usets;
 	}
 
-	public function setUseTimestamp(bool $use)
+	public function setUseTimestamp(bool $use): void
 	{
 		$this->usets = $use;
 	}
 
-	public function getSyncLevel()
+	public function getSyncLevel(): string
 	{
 		return $this->synclevel;
 	}
 
-	public function setSyncLevel($v)
+	/**
+	 * @param string|int $v 
+	 * @return void 
+	 */
+	public function setSyncLevel($v): void
 	{
-		$this->synclevel = $v;
+		$this->synclevel = (string) $v;
 	}
 
-	public function setTransport(OTP\TransportInterface $v)
+	public function setTransport(OTP\TransportInterface $v): void
 	{
 		$this->transport = $v;
 	}
 
 	public function getTransport() : OTP\TransportInterface
 	{
-		return $this->transport ?? new OTP\Transport(new \WildWolf\CurlMultiWrapper(), new \WildWolf\CurlWrapper());
+		return $this->transport ?? new OTP\Transport();
 	}
 
-	public static function parsePasswordOTP(string $s, string $delim = '[:]') : array
+	/**
+	 * @psalm-return array{otp: string, password: string, prefix: string, ciphertext: string}
+	 */
+	public static function parsePasswordOTP(string $s, string $delim = '[:]'): array
 	{
 		$re_qwerty = '/^(?:(.*)' . $delim . ')?(([cbdefghijklnrtuv]{0,16})([cbdefghijklnrtuv]{32}))$/i';
 		$re_dvorak = '/^(?:(.*)' . $delim . ')?(([jxe.uidchtnbpygk]{0,16})([jxe.uidchtnbpygk]{32}))$/i';
 		$m         = [];
 		$result    = [];
 
-		if (\preg_match($re_qwerty, $s, $m)) {
+		if (preg_match($re_qwerty, $s, $m)) {
 			$result['otp'] = $m[2];
 		}
-		elseif (\preg_match($re_dvorak, $s, $m)) {
-			$result['otp'] = \strtr($m[2], 'jxe.uidchtnbpygk', 'cbdefghijklnrtuv');
+		elseif (preg_match($re_dvorak, $s, $m)) {
+			$result['otp'] = strtr($m[2], 'jxe.uidchtnbpygk', 'cbdefghijklnrtuv');
 		}
 		else {
-			throw new \InvalidArgumentException();
+			throw new InvalidArgumentException();
 		}
 
 		$result['password']   = $m[1] ?? '';
@@ -102,19 +94,31 @@ class OTP
 		return $result;
 	}
 
-	public function verify(string $token, int $timeout = null) : bool
+	public function verify(string $token, int $timeout = null): bool
 	{
 		$ret    = self::parsePasswordOTP($token);
 		$params = [
 			'id'        => $this->id,
 			'otp'       => $ret['otp'],
-			'nonce'     => \md5(\openssl_random_pseudo_bytes(32)),
-			'timestamp' => (int)$this->usets,
+			'nonce'     => md5(openssl_random_pseudo_bytes(32)),
+			'timestamp' => $this->usets ? '1' : '0',
 			'sl'        => $this->synclevel,
-			'timeout'   => $timeout ?? '',
+			'timeout'   => (string) ($timeout ?? ''),
 		];
 
-		$t = $this->getTransport();
-		return $t->request($this->key, $this->endpoints, $params);
+		$s = $this->getTransport()->request($this->key, $this->endpoint, $params);
+		$response = new OTPResponse($s);
+
+		if ($response->isValid($params['otp'], $params['nonce']) && $response->verifySignature($this->key)) {
+			if ('REPLAYED_OTP' === $response->status()) {
+				throw new OTPReplayException();
+			}
+
+			if ('OK' === $response->status()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Run PHP Tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php:
+          - "7.4"
+          - "8.0"
+          - "8.1"
+        dependencies:
+          - lowest
+          - locked
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v2.4.0
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@2.16.0
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: Install Composer Dependencies
+        uses: ramsey/composer-install@2.0.5
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
+      - name: Run tests
+        run: vendor/bin/phpunit
