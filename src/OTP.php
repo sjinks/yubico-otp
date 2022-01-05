@@ -106,6 +106,8 @@ class OTP
 			'timeout'   => (string) ($timeout ?? ''),
 		];
 
+		$params = array_filter($params, fn (string $s): bool => $s !== '');
+
 		$s = $this->getTransport()->request($this->key, $this->endpoint, $params);
 		$response = new OTPResponse($s);
 
