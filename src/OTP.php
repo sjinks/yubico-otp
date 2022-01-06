@@ -94,7 +94,7 @@ class OTP
 		return $result;
 	}
 
-	public function verify(string $token, int $timeout = null): bool
+	public function verify(string $token, int $timeout = null, ?OTPResponse &$response = null): bool
 	{
 		$ret    = self::parsePasswordOTP($token);
 		$params = [
@@ -112,15 +112,10 @@ class OTP
 		$response = new OTPResponse($s);
 
 		if ($response->isValid($params['otp'], $params['nonce']) && $response->verifySignature($this->key)) {
-			if ('REPLAYED_OTP' === $response->status()) {
-				throw new OTPReplayException();
-			}
-
-			if ('OK' === $response->status()) {
-				return true;
-			}
+			return 'OK' === $response->status();
 		}
 
+		$response = null;
 		return false;
 	}
 }
