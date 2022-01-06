@@ -14,7 +14,16 @@ class Transport implements TransportInterface
 
 	protected function sendRequest(string $endpoint): string
 	{
+		$e = error_reporting();
+		if ($e & E_WARNING) {
+			error_reporting($e ^ E_WARNING);
+		}
+
 		$s = file_get_contents($endpoint);
+		if ($e & E_WARNING) {
+			error_reporting($e);
+		}
+
 		if (false === $s) {
 			throw new OTPException();
 		}
