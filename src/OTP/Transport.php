@@ -2,7 +2,7 @@
 
 namespace WildWolf\Yubico\OTP;
 
-use WildWolf\Yubico\OTPException;
+use WildWolf\Yubico\OTPTransportException;
 
 class Transport implements TransportInterface
 {
@@ -25,7 +25,7 @@ class Transport implements TransportInterface
 		}
 
 		if (false === $s) {
-			throw new OTPException();
+			throw new OTPTransportException();
 		}
 
 		return $s;

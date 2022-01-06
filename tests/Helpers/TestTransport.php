@@ -17,6 +17,9 @@ class TestTransport implements TransportInterface
 				$status = "BAD_OTP";
 				break;
 
+			case 'vvincrediblegfnchniugtdcbrleehenethrlbihdijd':
+				return "";
+
 			default:
 				$status = "OK";
 				break;
@@ -24,7 +27,7 @@ class TestTransport implements TransportInterface
 
 		$s   = sprintf("status=%s\r\notp=%s\r\nnonce=%s\r\nh=%s", $status, $params['otp'], $params['nonce'], '');
 		$r   = new OTPResponse($s);
-		$sig = $r->getSignature($key);
+		$sig = $r->calculateSignature($key);
 		return sprintf("status=%s\r\notp=%s\r\nnonce=%s\r\nh=%s", $status, $params['otp'], $params['nonce'], $sig);
 	}
 }

@@ -50,7 +50,7 @@ class OTP
 	}
 
 	/**
-	 * @param string|int $v 
+	 * @param string|int $v
 	 * @return void 
 	 */
 	public function setSyncLevel($v): void
@@ -111,11 +111,14 @@ class OTP
 		$s = $this->getTransport()->request($this->key, $this->endpoint, $params);
 		$response = new OTPResponse($s);
 
-		if ($response->isValid($params['otp'], $params['nonce']) && $response->verifySignature($this->key)) {
-			return 'OK' === $response->status();
+		if (!$response->isValid($params['otp'], $params['nonce'])) {
+			throw new OTPBadResponseException($response);
 		}
 
-		$response = null;
-		return false;
+		if (!$response->verifySignature($this->key)) {
+			throw new OTPTamperedResponseException($response);
+		}
+
+		return 'OK' === $response->getStatus();
 	}
 }

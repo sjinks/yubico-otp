@@ -17,13 +17,13 @@ class OTPResponseTest extends TestCase
 
 		$response = new OTPResponse($s);
 
-		self::assertEquals('2018-10-27T14:41:39Z0174', $response->timestamp());
-		self::assertEquals('ccccccjknjjnhntdujfhkvhivjnkcrgeibjhfviflkhv', $response->otp());
-		self::assertEquals('06adbf3280721ab6fc6148ff3cb89516', $response->nonce());
-		self::assertEquals('OK', $response->status());
-		self::assertEquals('25', $response->syncLevel());
-		self::assertEquals('dGsA2NWThFaCHW5Za3lN0hZD3sg=', $response->signature());
-		self::assertTrue($response->isValid($response->otp(), $response->nonce()));
+		self::assertEquals('2018-10-27T14:41:39Z0174', $response->getTimestamp());
+		self::assertEquals('ccccccjknjjnhntdujfhkvhivjnkcrgeibjhfviflkhv', $response->getOTP());
+		self::assertEquals('06adbf3280721ab6fc6148ff3cb89516', $response->getNonce());
+		self::assertEquals('OK', $response->getStatus());
+		self::assertEquals('25', $response->getSyncLevel());
+		self::assertEquals('dGsA2NWThFaCHW5Za3lN0hZD3sg=', $response->getSignature());
+		self::assertTrue($response->isValid($response->getOTP(), $response->getNonce()));
 	}
 
 	public function testParseFull(): void
@@ -41,15 +41,15 @@ class OTPResponseTest extends TestCase
 
 		$response = new OTPResponse($s);
 
-		self::assertEquals('2018-10-27T14:54:59Z0744', $response->timestamp());
-		self::assertEquals('ccccccjknjjnkhctftrughtnunlvthdddigekhtiijeb', $response->otp());
-		self::assertEquals('9234d78c2ce3d83cb8901b41dc15e26c', $response->nonce());
-		self::assertEquals('OK', $response->status());
-		self::assertEquals('25', $response->syncLevel());
-		self::assertEquals('hm0rj+viUpgzyls8PUfDQyoIwmQ=', $response->signature());
-		self::assertEquals('16184983', $response->internalTimestamp());
-		self::assertEquals('41', $response->sessionCounter());
-		self::assertEquals('2', $response->sessionUse());
+		self::assertEquals('2018-10-27T14:54:59Z0744', $response->getTimestamp());
+		self::assertEquals('ccccccjknjjnkhctftrughtnunlvthdddigekhtiijeb', $response->getOTP());
+		self::assertEquals('9234d78c2ce3d83cb8901b41dc15e26c', $response->getNonce());
+		self::assertEquals('OK', $response->getStatus());
+		self::assertEquals('25', $response->getSyncLevel());
+		self::assertEquals('hm0rj+viUpgzyls8PUfDQyoIwmQ=', $response->getSignature());
+		self::assertEquals('16184983', $response->getInternalTimestamp());
+		self::assertEquals('41', $response->getSessionCounter());
+		self::assertEquals('2', $response->getSessionUse());
 	}
 
 	public function testVerifySignatureNoKey(): void

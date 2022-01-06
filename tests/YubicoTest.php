@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use WildWolf\Yubico\OTP;
-use WildWolf\Yubico\OTPReplayException;
+use WildWolf\Yubico\OTPBadResponseException;
 use WildWolf\Yubico\OTPResponse;
 
 /**
@@ -26,7 +26,7 @@ class YubicoTest extends TestCase
 
 		self::assertFalse($result);
 		self::assertInstanceOf(OTPResponse::class, $response);
-		self::assertEquals('REPLAYED_OTP', $response->status());
+		self::assertEquals('REPLAYED_OTP', $response->getStatus());
 	}
 
 	public function testVerifyNoSig(): void
@@ -40,7 +40,7 @@ class YubicoTest extends TestCase
 
 		self::assertFalse($result);
 		self::assertInstanceOf(OTPResponse::class, $response);
-		self::assertEquals('REPLAYED_OTP', $response->status());
+		self::assertEquals('REPLAYED_OTP', $response->getStatus());
 	}
 
 	public function testBadOTP(): void
@@ -51,6 +51,22 @@ class YubicoTest extends TestCase
 
 		self::assertFalse($result);
 		self::assertInstanceOf(OTPResponse::class, $response);
-		self::assertEquals('BAD_OTP', $response->status());
+		self::assertEquals('BAD_OTP', $response->getStatus());
+	}
+
+	public function testBadResponse(): void
+	{
+		$otp      = 'vvincrediblegfnchniugtdcbrleehenethrlbihdijd';
+		$response = null;
+
+		try {
+			$this->yubi->verify($otp, null, $response);
+			self::assertTrue(false);
+		}
+		catch (Throwable $e) {
+			self::assertNotNull($response);
+			self::assertInstanceOf(OTPBadResponseException::class, $e);
+			self::assertInstanceOf(OTPResponse::class, $e->getResponse());
+		}
 	}
 }

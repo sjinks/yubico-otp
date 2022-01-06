@@ -25,47 +25,47 @@ final class OTPResponse
 		}
 	}
 
-	public function otp(): string
+	public function getOTP(): string
 	{
 		return (string) $this->otp;
 	}
 
-	public function nonce(): string
+	public function getNonce(): string
 	{
 		return (string) $this->nonce;
 	}
 
-	public function signature(): string
+	public function getSignature(): string
 	{
 		return (string) $this->h;
 	}
 
-	public function timestamp(): string
+	public function getTimestamp(): string
 	{
 		return (string) $this->t;
 	}
 
-	public function status(): string
+	public function getStatus(): string
 	{
 		return (string) $this->status;
 	}
 
-	public function internalTimestamp(): ?string
+	public function getInternalTimestamp(): ?string
 	{
 		return $this->timestamp;
 	}
 
-	public function sessionCounter(): ?string
+	public function getSessionCounter(): ?string
 	{
 		return $this->sessioncounter;
 	}
 
-	public function sessionUse(): ?string
+	public function getSessionUse(): ?string
 	{
 		return $this->sessionuse;
 	}
 
-	public function syncLevel(): ?int
+	public function getSyncLevel(): ?int
 	{
 		return $this->sl === null ? null : (int) $this->sl;
 	}
@@ -75,7 +75,7 @@ final class OTPResponse
 		return $this->status !== null && $this->nonce !== null && $this->otp !== null && !strcmp($orig_nonce, $this->nonce) && !strcmp($orig_otp, $this->otp);
 	}
 
-	public function getSignature(string $key): string
+	public function calculateSignature(string $key): string
 	{
 		/** @var string[] */
 		static $keys = ['nonce', 'otp', 'sessioncounter', 'sessionuse', 'sl', 'status', 't', 'timeout', 'timestamp'];
@@ -94,7 +94,7 @@ final class OTPResponse
 	public function verifySignature(string $key): bool
 	{
 		if ($key) {
-			$signature = $this->getSignature($key);
+			$signature = $this->calculateSignature($key);
 			return !strcmp((string) $this->h, $signature);
 		}
 

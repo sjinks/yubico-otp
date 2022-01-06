@@ -6,6 +6,9 @@ use WildWolf\Yubico\OTP\Transport;
 use WildWolf\Yubico\OTP\TransportInterface;
 use WildWolf\Yubico\OTPResponse;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class BasicTest extends TestCase
 {
 	private OTP $yubi;
@@ -73,7 +76,7 @@ class BasicTest extends TestCase
 			{
 				$s   = sprintf("status=OK\r\notp=%s\r\nnonce=%s\r\nh=%s", $params['otp'], $params['nonce'], '');
 				$r   = new OTPResponse($s);
-				$sig = $r->getSignature($key);
+				$sig = $r->calculateSignature($key);
 				return sprintf("status=OK\r\notp=%s\r\nnonce=%s\r\nh=%s", $params['otp'], $params['nonce'], $sig);
 			}
 		});
