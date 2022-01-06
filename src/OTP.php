@@ -94,7 +94,7 @@ class OTP
 		return $result;
 	}
 
-	public function verify(string $token, int $timeout = null, ?OTPResponse &$response = null): bool
+	public function verify(string $token, int $timeout = null, OTPResponse &$response = null): bool
 	{
 		$ret    = self::parsePasswordOTP($token);
 		$params = [
