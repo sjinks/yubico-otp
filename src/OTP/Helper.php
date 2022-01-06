@@ -17,7 +17,7 @@ abstract class Helper
 
 		$qs = substr($qs, 0, -1);
 		if ($key) {
-			$sig = str_replace('+', '%2B', base64_encode(hash_hmac('sha1', $qs, $key, true)));
+			$sig = urlencode(base64_encode(hash_hmac('sha1', $qs, $key, true)));
 			$qs .= '&h=' . $sig;
 		}
 

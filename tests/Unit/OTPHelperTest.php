@@ -14,7 +14,7 @@ class OTPHelperTest extends TestCase
 
 		$secret = 'secret';
 
-		$expected = 'a=1&b=2&h=0Nrzo2wVaw8JsjmGesHcZl4eDk4=';
+		$expected = 'a=1&b=2&h=0Nrzo2wVaw8JsjmGesHcZl4eDk4%3D';
 		$actual   = Helper::buildQueryString($params, $secret);
 		self::assertEquals($expected, $actual);
 	}
