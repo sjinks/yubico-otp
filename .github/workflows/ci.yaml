@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
 
       - name: Set up PHP
-        uses: shivammathur/setup-php@2.16.0
+        uses: shivammathur/setup-php@6d7209f44a25a59e904b1ee9f3b0c33ab2cd888d # 2.29.0
         with:
           php-version: ${{ matrix.php }}
 
