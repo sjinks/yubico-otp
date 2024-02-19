@@ -20,7 +20,7 @@ final class OTPResponse
 		foreach ($rows as $val) {
 			$row = explode('=', $val, 2);
 			if (property_exists($this, $row[0])) {
-				$this->{$row[0]} = $row[1];
+				$this->{$row[0]} = $row[1] ?? '';
 			}
 		}
 	}
