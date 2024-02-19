@@ -51,7 +51,7 @@ class OTP
 
 	/**
 	 * @param string|int $v
-	 * @return void 
+	 * @return void
 	 */
 	public function setSyncLevel($v): void
 	{
@@ -95,9 +95,9 @@ class OTP
 	}
 
 	/**
-	 * @throws InvalidArgumentException 
-	 * @throws OTPBadResponseException 
-	 * @throws OTPTamperedResponseException 
+	 * @throws InvalidArgumentException
+	 * @throws OTPBadResponseException
+	 * @throws OTPTamperedResponseException
 	 * @psalm-assert OTPResponse $response
 	 */
 	public function verify(string $token, int $timeout = null, OTPResponse &$response = null): bool

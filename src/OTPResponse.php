@@ -82,8 +82,7 @@ final class OTPResponse
 		$s           = '';
 		foreach ($keys as $k) {
 			if (isset($this->$k)) {
-				/** @var string */
-				$v  = $this->$k;
+				$v  = (string) $this->$k;
 				$s .= $k . '=' . $v . '&';
 			}
 		}

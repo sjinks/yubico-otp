@@ -5,7 +5,7 @@ namespace WildWolf\Yubico\OTP;
 abstract class Helper
 {
 	/**
-	 * @param array<string,string> $params 
+	 * @param array<string,string> $params
 	 */
 	public static function buildQueryString(array $params, string $key): string
 	{
