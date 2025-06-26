@@ -5,7 +5,7 @@ namespace WildWolf\Yubico;
 use InvalidArgumentException;
 use WildWolf\Yubico\OTP\TransportInterface;
 
-class OTP
+final class OTP
 {
 	private string $id;
 	private string $key;

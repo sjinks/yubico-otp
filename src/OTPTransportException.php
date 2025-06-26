@@ -2,6 +2,6 @@
 
 namespace WildWolf\Yubico;
 
-class OTPTransportException extends OTPException
+final class OTPTransportException extends OTPException
 {
 }
