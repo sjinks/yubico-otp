@@ -1,7 +1,6 @@
 <?php
 
 use WildWolf\Yubico\OTP\TransportInterface;
-use WildWolf\Yubico\OTPReplayException;
 use WildWolf\Yubico\OTPResponse;
 
 class TestTransport implements TransportInterface
