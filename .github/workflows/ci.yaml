@@ -17,8 +17,6 @@ jobs:
       fail-fast: true
       matrix:
         php:
-          - "7.4"
-          - "8.0"
           - "8.1"
           - "8.2"
           - "8.3"
@@ -40,4 +38,4 @@ jobs:
           dependency-versions: ${{ matrix.dependencies }}
 
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: composer test

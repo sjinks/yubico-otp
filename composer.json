@@ -1,6 +1,6 @@
 {
 	"name": "wildwolf/yubico-otp",
-	"description": "PHP 7-friendly alternative to the official php-yubico client",
+	"description": "Alternative to the official php-yubico client",
 	"type": "library",
 	"license": "MIT",
 	"authors": [
@@ -19,7 +19,7 @@
 		"2FA"
 	],
 	"require": {
-		"php": "^7.4 || ^8.0",
+		"php": "^8.1",
 		"ext-curl": "*",
 		"ext-openssl": "*"
 	},
@@ -44,11 +44,11 @@
 			"composer/package-versions-deprecated": true
 		},
 		"platform": {
-			"php": "7.4"
+			"php": "8.1.31"
 		}
 	},
 	"scripts": {
-		"psalm": "psalm --long-progress --no-cache",
+		"psalm": "psalm --long-progress --no-cache -m",
 		"test": "phpunit"
 	}
 }

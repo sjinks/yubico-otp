@@ -54,6 +54,9 @@ class YubicoTest extends TestCase
 		self::assertEquals('BAD_OTP', $response->getStatus());
 	}
 
+	/**
+	 * @psalm-suppress UnnecessaryVarAnnotation
+	 */
 	public function testBadResponse(): void
 	{
 		$otp      = 'vvincrediblegfnchniugtdcbrleehenethrlbihdijd';
@@ -66,6 +69,7 @@ class YubicoTest extends TestCase
 		catch (Throwable $e) {
 			self::assertNotNull($response);
 			self::assertInstanceOf(OTPBadResponseException::class, $e);
+			/** @var OTPBadResponseException $e */
 			self::assertInstanceOf(OTPResponse::class, $e->getResponse());
 		}
 	}
