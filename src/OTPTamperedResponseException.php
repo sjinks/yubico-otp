@@ -2,7 +2,7 @@
 
 namespace WildWolf\Yubico;
 
-class OTPTamperedResponseException extends OTPException
+final class OTPTamperedResponseException extends OTPException
 {
 	use OTPResponseTrait;
 }

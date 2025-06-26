@@ -4,7 +4,7 @@ namespace WildWolf\Yubico\OTP;
 
 use WildWolf\Yubico\OTPTransportException;
 
-class Transport implements TransportInterface
+final class Transport implements TransportInterface
 {
 	public function request(string $key, string $endpoint, array $params): string
 	{

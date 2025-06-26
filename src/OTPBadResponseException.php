@@ -2,7 +2,7 @@
 
 namespace WildWolf\Yubico;
 
-class OTPBadResponseException extends OTPException
+final class OTPBadResponseException extends OTPException
 {
 	use OTPResponseTrait;
 }
