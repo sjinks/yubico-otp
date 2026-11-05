@@ -5,9 +5,6 @@ use WildWolf\Yubico\OTP;
 use WildWolf\Yubico\OTPBadResponseException;
 use WildWolf\Yubico\OTPResponse;
 
-/**
- * @psalm-suppress MissingConstructor
- */
 class YubicoTest extends TestCase
 {
 	private OTP $yubi;

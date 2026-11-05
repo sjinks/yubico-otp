@@ -6,9 +6,6 @@ use WildWolf\Yubico\OTP\Transport;
 use WildWolf\Yubico\OTP\TransportInterface;
 use WildWolf\Yubico\OTPResponse;
 
-/**
- * @psalm-suppress MissingConstructor
- */
 class BasicTest extends TestCase
 {
 	private OTP $yubi;
